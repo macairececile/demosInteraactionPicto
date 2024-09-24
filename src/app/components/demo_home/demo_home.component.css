@@ -1,0 +1,70 @@
+/* Offcanvas styles (if needed) */
+.offcanvas {
+  /* Your offcanvas styles here */
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .container {
+    padding: 0 10px;
+  }
+}
+
+.container {
+  max-width: 90%;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.custom-card {
+  width: 20rem; /* Augmente la largeur de la carte si nécessaire */
+}
+
+.custom-img {
+  max-height: 500px; /* Ajustez cette valeur pour agrandir l'image */
+  object-fit: cover; /* Garde l'image centrée et conserve le ratio */
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column; /* Aligne les éléments en colonne */
+  min-height: 100vh; /* Assure que le body prend toute la hauteur de la fenêtre */
+}
+
+.main-content {
+  flex: 1; /* Prend tout l'espace disponible entre le header (s'il y en a) et le footer */
+}
+
+.footer {
+  background-color: #f8f9fa; /* Optionnel : couleur de fond du footer */
+  padding: 1rem;
+  position:fixed;
+  bottom:0px;
+  width: 100%;
+}
+
+.footer-logos {
+  display: flex;
+  gap: 20px; /* Espace entre les logos */
+}
+
+.footer-logo {
+  height: 50px; /* Ajustez la taille selon vos besoins */
+  width: auto;  /* Conserve le ratio des images */
+}
+
+.footer-text {
+  display: flex;
+  align-items: center; /* Aligne le texte verticalement avec les images */
+}

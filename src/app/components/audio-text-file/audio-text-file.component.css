@@ -1,0 +1,56 @@
+.offcanvas{
+  background-color: #f8f9fa;
+  border: 1px solid #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  width: 80%;
+  height: 80%;
+  /*margin-left: 10pt;*/
+  margin-bottom: 5%;
+}
+
+.parent-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styles de base pour le bouton */
+button {
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+/* Style pour l'icône du microphone */
+.recording-icon {
+  color: #005f99; /* Bleu pour le microphone */
+  transition: color 0.3s, transform 0.2s;
+}
+
+/* Effet hover pour rendre le bouton plus interactif */
+button:hover .recording-icon {
+  color: #29337A; /* Bleu plus foncé au survol */
+  transform: scale(1.1);
+}
+
+/* Animation pulsante pour indiquer l'enregistrement en cours */
+.recording-icon.active {
+  animation: pulse 1s infinite;
+}
+
+/* Animation pulsation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
