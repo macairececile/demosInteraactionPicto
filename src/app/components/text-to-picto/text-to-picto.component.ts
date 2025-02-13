@@ -1,22 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {AudioTextFileShareService} from "../../services/audioTextFileShare/audio-text-file-share.service";
 import {Router} from "@angular/router";
+import {ApiService} from "../../services/api.service";
 
 type PictoData = {
   id: number;
   word: string;
 };
 
-const translation_test: PictoData[] = [
-  {id: 21917, word: 'plaire'},
-  {id: 5397, word: 'heureusement'},
-  {id: 4671, word: 'aller_en_excursion_en_autobus'},
-  {id: 11709, word: 'au'},
-  {id: 2704, word: 'ville'},
-  {id: 2704, word: 'ville'},
-  {id: 2704, word: 'ville'},
-  {id: 2704, word: 'ville'}
-];
+const translation_test: PictoData[] = [];
 
 @Component({
   selector: 'app-text-to-picto',
@@ -28,16 +20,45 @@ export class TextToPictoComponent implements OnInit {
   lemmatisedText: string[] = [];
   inputText: string = '';
   isTranslated: boolean = false;
+  isLoading: boolean = false;
   translation_test = translation_test;
 
   constructor(private audioTextFileShareService: AudioTextFileShareService,
-              private router: Router) {
+              private router: Router,
+              private apiService: ApiService) {
   }
 
   ngOnInit(): void {
     this.audioTextFileShareService.lemmatisedText$.subscribe((text: string[]) => {
       this.lemmatisedText = text;
     });
+  }
+
+  onSubmitText() {
+    this.translation_test = [];
+    this.isTranslated = false;
+    this.isLoading = true;
+    this.apiService.processText(this.inputText).subscribe(
+        (response) => {
+          let tmpResponseId: string = response.processed_text;
+          let tmpTabReponseId: string[];
+          tmpResponseId = tmpResponseId.replace("[", "");
+          tmpResponseId = tmpResponseId.replace("]", "");
+          tmpTabReponseId = tmpResponseId.split(",");
+          let tmpReponseText: string[] = response.original_text.split(" ");
+          console.log(tmpReponseText);
+
+          for (let i=0; i<tmpTabReponseId.length; i++){
+            this.translation_test.push({id: Number(tmpTabReponseId[i]), word: tmpReponseText[i]});
+          }
+
+          this.isTranslated = true;
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Error processing text:', error);
+        }
+    );
   }
 
   onClickTexte(): void {

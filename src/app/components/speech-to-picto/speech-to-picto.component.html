@@ -62,15 +62,30 @@
       Traduire votre voix
     </button>
   </div>
+
+
+
+  <br>
+  <div>
+    <form>
+      <label for="file">Uploader un fichier audio :</label>
+      <input id="file" type="file" (change)="onFileUpload($event)" />
+    </form>
+  </div>
+</div>
+<div *ngIf="!isTranslated && isLoading"  class="text-center">
+  <div class="spinner-border loader" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
 </div>
 <div class="container">
-  <div *ngIf="this.isTranscripted" class="card">
+  <div *ngIf="isTranslated && !isLoading" class="card">
     <div class="card-body">
       <p class="text-justify">
         <strong>Transcription prédite :</strong> {{ this.transcript }}.
       </p>
     </div>
-    <div *ngIf="isTranslated" class="card">
+    <div class="card">
       <div class="card-body">
         <div class="image-container">
           <div
@@ -78,8 +93,8 @@
             *ngFor="let picto of translation_test; let index = index"
           >
             <img
-              [src]="'https://lig-interaactionpicto.imag.fr/api/p/arasaac/' + picto.id"
-              alt="{{ picto.word }}"
+              [src]="'https://lig-interaactionpicto.imag.fr/api/p/arasaac/' + picto"
+              alt=""
               height="200px"
               width="200px"
             />

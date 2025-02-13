@@ -1,22 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AudioTextFileShareService } from "../../services/audioTextFileShare/audio-text-file-share.service";
 import {Router} from "@angular/router";
-
-type PictoData = {
-  id: number;
-  word: string;
-};
-
-const translation_test: PictoData[] = [
-  { id: 21917, word: 'plaire' },
-  { id: 5397, word: 'heureusement' },
-  { id: 4671, word: 'aller_en_excursion_en_autobus' },
-  { id: 11709, word: 'au' },
-  { id: 2704, word: 'ville' },
-  { id: 2704, word: 'ville' },
-  { id: 2704, word: 'ville' },
-  { id: 2704, word: 'ville' }
-];
+import {ApiService} from "../../services/api.service";
 
 @Component({
   selector: 'app-speech-to-picto',
@@ -29,10 +14,12 @@ export class SpeechToPictoComponent implements OnInit {
   isTranslated: boolean = false;
   isTranscripted: boolean = false;
   transcript : string = "";
-  translation_test = translation_test;
+  translation_test: string[] = [];
+  isLoading: boolean = false;
 
   constructor(private audioTextFileShareService: AudioTextFileShareService,
-              private router : Router) { }
+              private router : Router,
+              private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.audioTextFileShareService.lemmatisedText$.subscribe((text: string[]) => {
@@ -50,6 +37,26 @@ export class SpeechToPictoComponent implements OnInit {
       this.transcript = text;
     });
 
+  }
+
+  onFileUpload(event: any) {
+      this.translation_test = [];
+      this.isTranslated = false;
+      this.isLoading = true;
+    const file: File = event.target.files[0];
+    if (file) {
+      this.apiService.processAudio(file).subscribe(
+          (response) => {
+              console.log(response)
+              this.translation_test = response;
+              this.isTranslated = true;
+              this.isLoading = false;
+          },
+          (error) => {
+            console.error('Error processing audio:', error);
+          }
+      );
+    }
   }
 
   // afficherTexteLemmatise() : string {
