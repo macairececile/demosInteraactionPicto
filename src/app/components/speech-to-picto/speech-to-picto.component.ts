@@ -21,23 +21,7 @@ export class SpeechToPictoComponent implements OnInit {
               private router : Router,
               private apiService: ApiService) { }
 
-  ngOnInit(): void {
-    this.audioTextFileShareService.lemmatisedText$.subscribe((text: string[]) => {
-      this.lemmatisedText = text;
-    });
-    this.audioTextFileShareService.translated$.subscribe(value => {
-      this.isTranslated = value;
-    });
-
-    this.audioTextFileShareService.transcript$.subscribe(value => {
-      this.isTranscripted = value;
-    });
-
-    this.audioTextFileShareService.transcription_whisper$.subscribe((text: string) => {
-      this.transcript = text;
-    });
-
-  }
+  ngOnInit(): void {}
 
   onFileUpload(event: any) {
       this.translation_test = [];
@@ -47,7 +31,6 @@ export class SpeechToPictoComponent implements OnInit {
     if (file) {
       this.apiService.processAudio(file).subscribe(
           (response) => {
-              console.log(response)
               this.translation_test = response;
               this.isTranslated = true;
               this.isLoading = false;

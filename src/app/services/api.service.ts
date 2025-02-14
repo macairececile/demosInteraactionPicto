@@ -18,8 +18,7 @@ export class ApiService {
   }
 
   // Exemple de requête POST pour envoyer du texte
-  processText(text: string): Observable<any> {
-    const params = new HttpParams().set('text', text);
-    return this.http.get(this.apiUrl+'/process_text', { params });
+  processText(sentence: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/process_text`, { sentence: sentence });
   }
 }

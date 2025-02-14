@@ -3,13 +3,6 @@ import {AudioTextFileShareService} from "../../services/audioTextFileShare/audio
 import {Router} from "@angular/router";
 import {ApiService} from "../../services/api.service";
 
-type PictoData = {
-  id: number;
-  word: string;
-};
-
-const translation_test: PictoData[] = [];
-
 @Component({
   selector: 'app-text-to-picto',
   templateUrl: './text-to-picto.component.html',
@@ -21,7 +14,7 @@ export class TextToPictoComponent implements OnInit {
   inputText: string = '';
   isTranslated: boolean = false;
   isLoading: boolean = false;
-  translation_test = translation_test;
+  translation_test: string[] = [];
 
   constructor(private audioTextFileShareService: AudioTextFileShareService,
               private router: Router,
@@ -40,20 +33,9 @@ export class TextToPictoComponent implements OnInit {
     this.isLoading = true;
     this.apiService.processText(this.inputText).subscribe(
         (response) => {
-          let tmpResponseId: string = response.processed_text;
-          let tmpTabReponseId: string[];
-          tmpResponseId = tmpResponseId.replace("[", "");
-          tmpResponseId = tmpResponseId.replace("]", "");
-          tmpTabReponseId = tmpResponseId.split(",");
-          let tmpReponseText: string[] = response.original_text.split(" ");
-          console.log(tmpReponseText);
-
-          for (let i=0; i<tmpTabReponseId.length; i++){
-            this.translation_test.push({id: Number(tmpTabReponseId[i]), word: tmpReponseText[i]});
-          }
-
-          this.isTranslated = true;
-          this.isLoading = false;
+            this.translation_test = response
+            this.isTranslated = true;
+            this.isLoading = false;
         },
         (error) => {
           console.error('Error processing text:', error);
