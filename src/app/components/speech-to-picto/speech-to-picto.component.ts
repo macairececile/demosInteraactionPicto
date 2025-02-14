@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { AudioTextFileShareService } from "../../services/audioTextFileShare/audio-text-file-share.service";
 import {Router} from "@angular/router";
 import {ApiService} from "../../services/api.service";
@@ -9,6 +9,8 @@ import {ApiService} from "../../services/api.service";
   styleUrls: ['./speech-to-picto.component.css']
 })
 export class SpeechToPictoComponent implements OnInit {
+
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   lemmatisedText: string[] = [];
   isTranslated: boolean = false;
@@ -22,6 +24,10 @@ export class SpeechToPictoComponent implements OnInit {
               private apiService: ApiService) { }
 
   ngOnInit(): void {}
+
+  triggerFileInput(){
+      this.fileInput.nativeElement.click();
+  }
 
   onFileUpload(event: any) {
       this.translation_test = [];

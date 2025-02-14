@@ -58,21 +58,12 @@
     </div>
   </div>
   <div class="addSong">
-    <button (click)="this.isTranscripted=false" type="button" class="btn btn-info btn-lg" data-bs-target="#audioTextFile" data-bs-toggle="offcanvas">
+    <button (click)="triggerFileInput()" type="button" class="btn btn-info btn-lg">
       Traduire votre voix
     </button>
+    <input #fileInput type="file" hidden (change)="onFileUpload($event)" />
   </div>
 
-
-
-  <br>
-  <div>
-    <form>
-      <label for="file">Uploader un fichier audio :</label>
-      <input id="file" type="file" (change)="onFileUpload($event)" />
-    </form>
-  </div>
-</div>
 <div *ngIf="!isTranslated && isLoading"  class="text-center">
   <div class="spinner-border loader" role="status">
     <span class="visually-hidden">Loading...</span>
@@ -103,5 +94,5 @@
       </div>
     </div>
 </div>
-<app-audio-text-file></app-audio-text-file>
+</div>
 </div>
