@@ -31,6 +31,7 @@ export class TextToPictoComponent implements OnInit {
     this.translation_test = [];
     this.isTranslated = false;
     this.isLoading = true;
+    console.log(this.inputText)
     this.apiService.processText(this.inputText).subscribe(
         (response) => {
             this.translation_test = response
@@ -61,10 +62,10 @@ export class TextToPictoComponent implements OnInit {
   }
 
   goToPage(page_name: string): void {
-    if (page_name == "demos") {
-      this.router.navigate(['demos']);
-    } else if (page_name == "eval") {
-      this.router.navigate(['evalDemos']);
+    if (page_name == "hubpictos") {
+      this.router.navigate(['hubpictos']);
+    } else if (page_name == "picto") {
+      this.router.navigate(['picto']);
     } else if (page_name == "speech") {
       this.router.navigate(['speechToPicto']);
     }

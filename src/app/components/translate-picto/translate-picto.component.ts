@@ -5,6 +5,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogMaxWordsComponent} from "../dialog-max-words/dialog-max-words.component";
 import {EditionService} from "../../services/edition-service";
 import {SaveDataService} from "../../services/save-data.service";
+import {Router} from "@angular/router";
 
 declare var monitorInput:any;
 declare var getUrlPicto:any;
@@ -36,6 +37,7 @@ export class TranslatePictoComponent implements OnInit {
 
   constructor(public languageService: LanguageService,
               public editionService: EditionService,
+              private router : Router,
               public saveData: SaveDataService,
               public dialog: MatDialog) { }
 
@@ -284,5 +286,17 @@ export class TranslatePictoComponent implements OnInit {
       tmpDisplayTab.push(listImg);
     });
     this.result = tmpDisplayTab;
+  }
+
+  goToPage(page_name: string) : void {
+    if (page_name == "hubpictos") {
+      this.router.navigate(['hubpictos']);
+    }
+    else if (page_name == "text") {
+      this.router.navigate(['textToPicto']);
+    }
+    else if (page_name == "picto") {
+      this.router.navigate(['picto']);
+    }
   }
 }

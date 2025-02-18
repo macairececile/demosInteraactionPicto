@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
   <div class="container-fluid">
-    <a class="navbar-brand" (click)="goToPage('demos'); $event.preventDefault();">Démos</a>
+    <a class="navbar-brand" (click)="goToPage('hubpictos'); $event.preventDefault();">Démos</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -9,7 +9,10 @@
     <div class=" collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto ">
         <li class="nav-item">
-          <a class="nav-link mx-2" aria-current="page" (click)="goToPage('demos'); $event.preventDefault();">Accueil</a>
+          <a class="nav-link mx-2" aria-current="page" (click)="goToPage('hubpictos'); $event.preventDefault();">Accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link mx-2" href="#" (click)="goToPage('picto'); $event.preventDefault();">Picto</a>
         </li>
         <li class="nav-item">
           <a class="nav-link mx-2" href="#" (click)="goToPage('speech'); $event.preventDefault();">
@@ -20,9 +23,6 @@
           <a class="nav-link mx-2 active" routerLink="/textToPicto"
              routerLinkActive="active"
              [routerLinkActiveOptions]="{ exact: true }">Text-to-Picto</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#" (click)="goToPage('eval'); $event.preventDefault();">Évaluation</a>
         </li>
       </ul>
     </div>
@@ -64,7 +64,7 @@
   </div>
 
   <div>
-    <button (click)="onSubmitText()" type="button" class="btn btn-info btn-lg w-100">
+    <button (click)="onSubmitText()" type="button" class="btn btn-info btn-lg">
       Traduire
     </button>
   </div>
@@ -81,7 +81,7 @@
       <div class="image-container">
         <div class="example-box" *ngFor="let picto of translation_test; let index = index">
           <img
-            [src]="'https://lig-interaactionpicto.imag.fr/api/p/arasaac/' + picto"
+            [src]="'https://static.arasaac.org/pictograms/' + picto + '/' + picto + '_300.png'"
             alt=""
             height="200px"
             width="200px"
