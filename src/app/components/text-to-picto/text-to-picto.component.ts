@@ -1,22 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AudioTextFileShareService} from "../../services/audioTextFileShare/audio-text-file-share.service";
 import {Router} from "@angular/router";
-
-type PictoData = {
-  id: number;
-  word: string;
-};
-
-const translation_test: PictoData[] = [
-  {id: 21917, word: 'plaire'},
-  {id: 5397, word: 'heureusement'},
-  {id: 4671, word: 'aller_en_excursion_en_autobus'},
-  {id: 11709, word: 'au'},
-  {id: 2704, word: 'ville'},
-  {id: 2704, word: 'ville'},
-  {id: 2704, word: 'ville'},
-  {id: 2704, word: 'ville'}
-];
+import {ApiService} from "../../services/api.service";
 
 @Component({
   selector: 'app-text-to-picto',
@@ -28,16 +13,34 @@ export class TextToPictoComponent implements OnInit {
   lemmatisedText: string[] = [];
   inputText: string = '';
   isTranslated: boolean = false;
-  translation_test = translation_test;
+  isLoading: boolean = false;
+  translation_test: string[] = [];
 
   constructor(private audioTextFileShareService: AudioTextFileShareService,
-              private router: Router) {
+              private router: Router,
+              private apiService: ApiService) {
   }
 
   ngOnInit(): void {
     this.audioTextFileShareService.lemmatisedText$.subscribe((text: string[]) => {
       this.lemmatisedText = text;
     });
+  }
+
+  onSubmitText() {
+    this.translation_test = [];
+    this.isTranslated = false;
+    this.isLoading = true;
+    this.apiService.processText(this.inputText).subscribe(
+        (response) => {
+            this.translation_test = response
+            this.isTranslated = true;
+            this.isLoading = false;
+        },
+        (error) => {
+          console.error('Error processing text:', error);
+        }
+    );
   }
 
   onClickTexte(): void {
@@ -58,10 +61,10 @@ export class TextToPictoComponent implements OnInit {
   }
 
   goToPage(page_name: string): void {
-    if (page_name == "demos") {
-      this.router.navigate(['demos']);
-    } else if (page_name == "eval") {
-      this.router.navigate(['evalDemos']);
+    if (page_name == "hubpictos") {
+      this.router.navigate(['hubpictos']);
+    } else if (page_name == "picto") {
+      this.router.navigate(['picto']);
     } else if (page_name == "speech") {
       this.router.navigate(['speechToPicto']);
     }

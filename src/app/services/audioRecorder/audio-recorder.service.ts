@@ -10,6 +10,7 @@ export class AudioRecorderService {
   audioChunks: any = [];
   audioBlob: Blob = new Blob();
   audioUrl: any;
+  audioFile: any;
   audio = new Audio();
 
   audioObservable = new Subject();
@@ -29,6 +30,7 @@ export class AudioRecorderService {
           this.audioBlob = new Blob(this.audioChunks, {type: "audio/wav"});
           this.audioUrl = URL.createObjectURL(this.audioBlob);
           this.audio = new Audio(this.audioUrl);
+          this.audioFile = new File([this.audioBlob], 'recording.wav', {type: 'audio/wav'})
         });
 
       });

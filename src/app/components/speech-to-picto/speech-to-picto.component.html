@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
   <div class="container-fluid">
-    <a class="navbar-brand" (click)="goToPage('demos'); $event.preventDefault();">Démos</a>
+    <a class="navbar-brand" (click)="goToPage('hubpictos'); $event.preventDefault();">Démos</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -9,7 +9,10 @@
     <div class=" collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link mx-2" (click)="goToPage('demos'); $event.preventDefault();">Accueil</a>
+          <a class="nav-link mx-2" (click)="goToPage('hubpictos'); $event.preventDefault();">Accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link mx-2" href="#" (click)="goToPage('picto'); $event.preventDefault();">Picto</a>
         </li>
         <li class="nav-item">
           <a class="nav-link mx-2 active" href="#" routerLink="/speechToPicto"
@@ -20,9 +23,6 @@
         </li>
         <li class="nav-item">
           <a class="nav-link mx-2" href="#" (click)="goToPage('text'); $event.preventDefault();">Text-to-Picto</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#" (click)="goToPage('eval'); $event.preventDefault();">Évaluation</a>
         </li>
       </ul>
     </div>
@@ -57,29 +57,60 @@
       <br><em>Ceci est un travail de recherche, la traduction peut comporter des erreurs.</em>
     </div>
   </div>
+
   <div class="addSong">
-    <button (click)="this.isTranscripted=false" type="button" class="btn btn-info btn-lg" data-bs-target="#audioTextFile" data-bs-toggle="offcanvas">
+    <button (click)="triggerFileInput()" type="button" class="btn btn-info btn-lg">
+      Traduire fichier audio
+    </button>
+    <button (click)="recordVoice()" type="button" class="btn btn-info btn-lg recordVoice">
       Traduire votre voix
     </button>
+    <input #fileInput type="file" hidden (change)="onFileUpload($event)" />
+  </div>
+<br>
+  <div class="speechRecord" *ngIf="showRecord">
+    <div>
+      <button [class]="buttonAdd" type="button" (click)="recording()" *ngIf="!isRecording">
+        <i class="fa-solid fa-microphone fa-2xl" style="color: #c31818;"></i>
+      </button>
+      <button [class]="buttonAdd" type="button" (click)="recording()" *ngIf="isRecording">
+        <i class="fa-solid fa-microphone-slash fa-2xl" style="color: #c31818"></i>
+      </button>
+      <span *ngIf="!isRecording"> Pas d'enregistrement en cours</span>
+      <span *ngIf="isRecording">
+              Enregistrement en cours
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden"></span>
+              </div>
+            </span>
+    </div>
+    <br>
+    <audio [src]="recordedSongToListen" controls></audio>
+    <br>
+    <button [class]="buttonAdd" type="button" (click)="addSong()" [disabled]="disableAddSongButton">Traduire</button>
+  </div>
+
+<div *ngIf="!isTranslated && isLoading"  class="text-center">
+  <div class="spinner-border loader" role="status">
+    <span class="visually-hidden">Loading...</span>
   </div>
 </div>
 <div class="container">
-  <div *ngIf="this.isTranscripted" class="card">
+  <div *ngIf="isTranslated && !isLoading" class="card">
     <div class="card-body">
       <p class="text-justify">
         <strong>Transcription prédite :</strong> {{ this.transcript }}.
       </p>
     </div>
-    <div *ngIf="isTranslated" class="card">
+    <div class="card">
       <div class="card-body">
         <div class="image-container">
           <div
             class="example-box"
             *ngFor="let picto of translation_test; let index = index"
           >
-            <img
-              [src]="'https://lig-interaactionpicto.imag.fr/api/p/arasaac/' + picto.id"
-              alt="{{ picto.word }}"
+            <img [src]="'https://static.arasaac.org/pictograms/' + picto + '/' + picto + '_300.png'"
+              alt=""
               height="200px"
               width="200px"
             />
@@ -88,5 +119,5 @@
       </div>
     </div>
 </div>
-<app-audio-text-file></app-audio-text-file>
+</div>
 </div>

@@ -35,8 +35,8 @@ export class DemoHomeComponent implements OnInit {
     else if (page_name == "text") {
       this.router.navigate(['textToPicto']);
     }
-    else if (page_name == "eval") {
-      this.router.navigate(['evalDemos']);
+    else if (page_name == "picto") {
+      this.router.navigate(['picto']);
     }
   }
 }

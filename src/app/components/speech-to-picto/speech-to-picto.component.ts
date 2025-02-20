@@ -1,22 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { AudioTextFileShareService } from "../../services/audioTextFileShare/audio-text-file-share.service";
 import {Router} from "@angular/router";
-
-type PictoData = {
-  id: number;
-  word: string;
-};
-
-const translation_test: PictoData[] = [
-  { id: 21917, word: 'plaire' },
-  { id: 5397, word: 'heureusement' },
-  { id: 4671, word: 'aller_en_excursion_en_autobus' },
-  { id: 11709, word: 'au' },
-  { id: 2704, word: 'ville' },
-  { id: 2704, word: 'ville' },
-  { id: 2704, word: 'ville' },
-  { id: 2704, word: 'ville' }
-];
+import {ApiService} from "../../services/api.service";
+import {AudioRecorderService} from "../../services/audioRecorder/audio-recorder.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-speech-to-picto',
@@ -25,31 +12,32 @@ const translation_test: PictoData[] = [
 })
 export class SpeechToPictoComponent implements OnInit {
 
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
   lemmatisedText: string[] = [];
   isTranslated: boolean = false;
   isTranscripted: boolean = false;
   transcript : string = "";
-  translation_test = translation_test;
+  translation_test: string[] = [];
+  isLoading: boolean = false;
+  isRecording: boolean = false;
+    recordedSongToListen: any = "";
+    soundToListen: any = "";
+    disableAddSongButton: boolean = true;
+    buttonAdd: string = "";
+    showRecord: boolean = false;
 
   constructor(private audioTextFileShareService: AudioTextFileShareService,
-              private router : Router) { }
+              private audioRecorderService: AudioRecorderService,
+              public sanitizer: DomSanitizer,
+              private router : Router,
+              private apiService: ApiService) { }
 
-  ngOnInit(): void {
-    this.audioTextFileShareService.lemmatisedText$.subscribe((text: string[]) => {
-      this.lemmatisedText = text;
-    });
-    this.audioTextFileShareService.translated$.subscribe(value => {
-      this.isTranslated = value;
-    });
+  ngOnInit(): void {}
 
-    this.audioTextFileShareService.transcript$.subscribe(value => {
-      this.isTranscripted = value;
-    });
-
-    this.audioTextFileShareService.transcription_whisper$.subscribe((text: string) => {
-      this.transcript = text;
-    });
-
+  triggerFileInput(){
+      this.showRecord = false;
+      this.fileInput.nativeElement.click();
   }
 
   // afficherTexteLemmatise() : string {
@@ -61,15 +49,82 @@ export class SpeechToPictoComponent implements OnInit {
   // }
 
   goToPage(page_name: string) : void {
-    if (page_name == "demos") {
-      this.router.navigate(['demos']);
+    if (page_name == "hubpictos") {
+      this.router.navigate(['hubpictos']);
     }
     else if (page_name == "text") {
       this.router.navigate(['textToPicto']);
     }
-    else if (page_name == "eval") {
-      this.router.navigate(['evalDemos']);
+    else if (page_name == "picto") {
+      this.router.navigate(['picto']);
     }
   }
 
+  recordVoice(){
+      this.showRecord = true;
+  }
+    recording(){
+        if (this.isRecording){
+            this.stopRecord();
+        }else {
+            this.startRecord();
+        }
+    }
+
+    startRecord(){
+        this.soundToListen = "";
+        this.isRecording = true;
+        this.audioRecorderService.startRecording();
+    }
+
+    stopRecord(){
+        this.isRecording = false;
+        this.audioRecorderService.stopRecording();
+        setTimeout(() => {
+            this.recordedSongToListen = this.sanitizer.bypassSecurityTrustResourceUrl(this.audioRecorderService.audioUrl);
+        }, 500);
+        this.checkRecord();
+    }
+
+    checkRecord(){
+        this.disableAddSongButton = this.soundToListen != "";
+    }
+
+    addSong(){
+        this.translation_test = [];
+        this.showRecord = false;
+        this.isTranslated = false;
+        this.isLoading = true;
+        this.apiService.processAudio(this.audioRecorderService.audioFile).subscribe(
+                (response) => {
+                    this.transcript = response[0]
+                    this.translation_test = response[1];
+                    this.isTranslated = true;
+                    this.isLoading = false;
+                },
+                (error) => {
+                    console.error('Error processing audio voice:', error);
+                }
+            );
+        }
+
+    onFileUpload(event: any) {
+        this.translation_test = [];
+        this.isTranslated = false;
+        this.isLoading = true;
+        const file: File = event.target.files[0];
+        if (file) {
+            this.apiService.processAudio(file).subscribe(
+                (response) => {
+                    this.transcript = response[0];
+                    this.translation_test = response[1];
+                    this.isTranslated = true;
+                    this.isLoading = false;
+                },
+                (error) => {
+                    console.error('Error processing audio file:', error);
+                }
+            );
+        }
+    }
 }

@@ -58,8 +58,8 @@ export class Eval_demosComponent implements OnInit {
   }
 
   goToPage(page_name: string): void {
-    if (page_name == "demos") {
-      this.router.navigate(['demos']);
+    if (page_name == "hubpictos") {
+      this.router.navigate(['hubpictos']);
     } else if (page_name == "text") {
       this.router.navigate(['textToPicto']);
     } else if (page_name == "speech") {

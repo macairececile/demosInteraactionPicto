@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
   <div class="container-fluid">
-    <a class="navbar-brand" aria-current="page" routerLink="/demos"
+    <a class="navbar-brand" aria-current="page" routerLink="/hubpictos"
        routerLinkActive="active"
        [routerLinkActiveOptions]="{ exact: true }">Démos</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,20 +10,18 @@
     <div class=" collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ms-auto ">
         <li class="nav-item">
-          <a class="nav-link mx-2 active" aria-current="page" routerLink="/demos"
+          <a class="nav-link mx-2 active" aria-current="page" routerLink="/hubpictos"
              routerLinkActive="active"
              [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link mx-2" href="#" (click)="goToPage('speech'); $event.preventDefault();">
-            Speech-to-Picto
-          </a>
+          <a class="nav-link mx-2" href="#" (click)="goToPage('picto'); $event.preventDefault();">Picto</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link mx-2" href="#" (click)="goToPage('speech'); $event.preventDefault();">Speech-to-Picto</a>
         </li>
         <li class="nav-item">
           <a class="nav-link mx-2" href="#" (click)="goToPage('text'); $event.preventDefault();">Text-to-Picto</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#" (click)="goToPage('eval'); $event.preventDefault();">Évaluation</a>
         </li>
       </ul>
     </div>
@@ -34,6 +32,16 @@
 
 <div class="container d-flex justify-content-center px-5">
   <div class="row" style="margin-bottom: 120px">
+    <div class="card m-4" style="width: 20rem;">
+      <img src="assets/images/évaluateur.png" class="card-img-top img-fluid custom-img" alt="eval">
+      <div class="card-body">
+        <h2 class="card-title">Picto</h2>
+        <p class="card-text">
+          //TODO
+        </p>
+        <a type="button" class="btn-lg btn btn-info" (click)="goToPage('picto');">Accéder</a>
+      </div>
+    </div>
     <div class="card m-4" style="width: 28rem;">
       <img src="assets/images/speechtopicto.svg" class="card-img-top img-fluid" alt="speechtopicto">
       <div class="card-body">
@@ -54,27 +62,20 @@
         <a type="button" class="btn-lg btn btn-info" (click)="goToPage('text');">Accéder</a>
       </div>
     </div>
-    <div class="card m-4" style="width: 20rem;">
-      <img src="assets/images/évaluateur.png" class="card-img-top img-fluid custom-img" alt="eval">
-      <div class="card-body">
-        <h2 class="card-title">Évaluation</h2>
-        <p class="card-text">
-          Plateforme d'évaluation de traductions en pictogrammes ARASAAC.
-        </p>
-        <a type="button" class="btn-lg btn btn-info" (click)="goToPage('eval');">Accéder</a>
-      </div>
-    </div>
   </div>
 </div>
 </div>
 
 <footer class="footer mt-auto py-3 bg-light">
-  <div class="container d-flex justify-content-between align-items-center">
+  <div class="container d-flex justify-content-between align-items-center info">
     <span class="text-muted footer-text">2024 ©</span>
     <div class="footer-logos d-flex align-items-center">
       <img ngSrc="assets/images/propicto.png" alt="Logo 1" class="footer-logo" height="506" width="800">
       <img ngSrc="assets/images/uga_logo.png" alt="Logo 2" class="footer-logo" height="315" width="512">
       <img ngSrc="assets/images/Logo_LIG.png" alt="Logo 3" class="footer-logo" height="145" width="212">
     </div>
+  </div>
+  <div class="container d-flex justify-content-between align-items-center info">
+    <span class="text-muted footer-text"> Contact : //TODO</span>
   </div>
 </footer>

@@ -35,8 +35,8 @@ const routes: Routes = [
   {path: 'admin', component:AdminComponent},
   {path: 'login', component:LoginComponent},
   {path: 'loading', component:LoadingComponent},
-  {path: 'demos', component:DemoHomeComponent},
-  {path: '', redirectTo:'picto', pathMatch: 'full'}
+  {path: 'hubpictos', component:DemoHomeComponent},
+  {path: '', redirectTo:'hubpictos', pathMatch: 'full'}
 ];
 
 @NgModule({
