@@ -40,25 +40,6 @@ export class SpeechToPictoComponent implements OnInit {
       this.fileInput.nativeElement.click();
   }
 
-  onFileUpload(event: any) {
-      this.translation_test = [];
-      this.isTranslated = false;
-      this.isLoading = true;
-    const file: File = event.target.files[0];
-    if (file) {
-      this.apiService.processAudio(file).subscribe(
-          (response) => {
-              this.translation_test = response;
-              this.isTranslated = true;
-              this.isLoading = false;
-          },
-          (error) => {
-            console.error('Error processing audio:', error);
-          }
-      );
-    }
-  }
-
   // afficherTexteLemmatise() : string {
   //   let texte: string = "";
   //   for (let i = 0; i < this.lemmatisedText.length; i++) {
@@ -116,13 +97,34 @@ export class SpeechToPictoComponent implements OnInit {
         this.isLoading = true;
         this.apiService.processAudio(this.audioRecorderService.audioFile).subscribe(
                 (response) => {
-                    this.translation_test = response;
+                    this.transcript = response[0]
+                    this.translation_test = response[1];
                     this.isTranslated = true;
                     this.isLoading = false;
                 },
                 (error) => {
-                    console.error('Error processing audio:', error);
+                    console.error('Error processing audio voice:', error);
                 }
             );
         }
+
+    onFileUpload(event: any) {
+        this.translation_test = [];
+        this.isTranslated = false;
+        this.isLoading = true;
+        const file: File = event.target.files[0];
+        if (file) {
+            this.apiService.processAudio(file).subscribe(
+                (response) => {
+                    this.transcript = response[0];
+                    this.translation_test = response[1];
+                    this.isTranslated = true;
+                    this.isLoading = false;
+                },
+                (error) => {
+                    console.error('Error processing audio file:', error);
+                }
+            );
+        }
+    }
 }

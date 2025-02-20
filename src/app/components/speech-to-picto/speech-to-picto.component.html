@@ -87,7 +87,7 @@
     <br>
     <audio [src]="recordedSongToListen" controls></audio>
     <br>
-    <button [class]="buttonAdd" type="button" (click)="addSong()" data-bs-toggle="offcanvas" data-bs-target="#playerRecorder" [disabled]="disableAddSongButton">Traduire</button>
+    <button [class]="buttonAdd" type="button" (click)="addSong()" [disabled]="disableAddSongButton">Traduire</button>
   </div>
 
 <div *ngIf="!isTranslated && isLoading"  class="text-center">

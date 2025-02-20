@@ -31,7 +31,6 @@ export class TextToPictoComponent implements OnInit {
     this.translation_test = [];
     this.isTranslated = false;
     this.isLoading = true;
-    console.log(this.inputText)
     this.apiService.processText(this.inputText).subscribe(
         (response) => {
             this.translation_test = response
