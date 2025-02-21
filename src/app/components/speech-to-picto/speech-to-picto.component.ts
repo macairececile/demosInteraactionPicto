@@ -22,7 +22,7 @@ export class SpeechToPictoComponent implements OnInit {
   isLoading: boolean = false;
   isRecording: boolean = false;
     recordedSongToListen: any = "";
-    soundToListen: any = "";
+    sendSound: boolean = false;
     disableAddSongButton: boolean = true;
     buttonAdd: string = "";
     showRecord: boolean = false;
@@ -37,6 +37,8 @@ export class SpeechToPictoComponent implements OnInit {
 
   triggerFileInput(){
       this.showRecord = false;
+      this.isTranslated = false;
+      this.isLoading = false;
       this.fileInput.nativeElement.click();
   }
 
@@ -62,6 +64,10 @@ export class SpeechToPictoComponent implements OnInit {
 
   recordVoice(){
       this.showRecord = true;
+      this.isTranslated = false;
+      this.isLoading = false;
+      this.recordedSongToListen = null;
+      this.sendSound = false;
   }
     recording(){
         if (this.isRecording){
@@ -72,7 +78,6 @@ export class SpeechToPictoComponent implements OnInit {
     }
 
     startRecord(){
-        this.soundToListen = "";
         this.isRecording = true;
         this.audioRecorderService.startRecording();
     }
@@ -82,12 +87,8 @@ export class SpeechToPictoComponent implements OnInit {
         this.audioRecorderService.stopRecording();
         setTimeout(() => {
             this.recordedSongToListen = this.sanitizer.bypassSecurityTrustResourceUrl(this.audioRecorderService.audioUrl);
+            this.sendSound = true;
         }, 500);
-        this.checkRecord();
-    }
-
-    checkRecord(){
-        this.disableAddSongButton = this.soundToListen != "";
     }
 
     addSong(){
@@ -109,22 +110,22 @@ export class SpeechToPictoComponent implements OnInit {
         }
 
     onFileUpload(event: any) {
-        this.translation_test = [];
-        this.isTranslated = false;
-        this.isLoading = true;
-        const file: File = event.target.files[0];
-        if (file) {
-            this.apiService.processAudio(file).subscribe(
-                (response) => {
-                    this.transcript = response[0];
-                    this.translation_test = response[1];
-                    this.isTranslated = true;
-                    this.isLoading = false;
-                },
-                (error) => {
-                    console.error('Error processing audio file:', error);
-                }
-            );
-        }
+          this.translation_test = [];
+          this.isTranslated = false;
+          this.isLoading = true;
+          const file: File = event.target.files[0];
+          if (file) {
+              this.apiService.processAudio(file).subscribe(
+                  (response) => {
+                      this.transcript = response[0];
+                      this.translation_test = response[1];
+                      this.isTranslated = true;
+                      this.isLoading = false;
+                  },
+                  (error) => {
+                      console.error('Error processing audio file:', error);
+                  }
+              );
+      }
     }
 }
