@@ -60,7 +60,7 @@
 
   <div class="addSong">
     <button (click)="triggerFileInput()" type="button" class="btn btn-info btn-lg">
-      Traduire fichier audio
+      Traduire un fichier audio
     </button>
     <button (click)="recordVoice()" type="button" class="btn btn-info btn-lg recordVoice">
       Traduire votre voix
@@ -70,24 +70,24 @@
 <br>
   <div class="speechRecord" *ngIf="showRecord">
     <div>
-      <button [class]="buttonAdd" type="button" (click)="recording()" *ngIf="!isRecording">
+      <button [class]="buttonAdd" type="button" class="btn btn-info btn-lg" (click)="recording()" *ngIf="!isRecording">
         <i class="fa-solid fa-microphone fa-2xl" style="color: #c31818;"></i>
+        <span> Pas d'enregistrement en cours</span>
       </button>
-      <button [class]="buttonAdd" type="button" (click)="recording()" *ngIf="isRecording">
+      <button [class]="buttonAdd" type="button" class="btn btn-info btn-lg" (click)="recording()" *ngIf="isRecording">
         <i class="fa-solid fa-microphone-slash fa-2xl" style="color: #c31818"></i>
-      </button>
-      <span *ngIf="!isRecording"> Pas d'enregistrement en cours</span>
-      <span *ngIf="isRecording">
+        <span>
               Enregistrement en cours
               <div class="spinner-border" role="status">
                 <span class="visually-hidden"></span>
               </div>
             </span>
+      </button>
     </div>
     <br>
     <audio [src]="recordedSongToListen" controls></audio>
     <br>
-    <button [class]="buttonAdd" type="button" (click)="addSong()" [disabled]="disableAddSongButton">Traduire</button>
+    <button [class]="buttonAdd" type="button" class="btn btn-info btn-lg" (click)="addSong()" [disabled]="!sendSound">Traduire</button>
   </div>
 
 <div *ngIf="!isTranslated && isLoading"  class="text-center">
